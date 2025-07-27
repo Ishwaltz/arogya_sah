@@ -1,0 +1,23 @@
+export const commonMedicines = [
+  "Aspirin", "Ibuprofen", "Acetaminophen (Paracetamol)", "Naproxen",
+  "Lisinopril", "Amlodipine", "Metoprolol", "Atorvastatin", "Simvastatin",
+  "Metformin", "Glipizide", "Insulin Glargine", "Levothyroxine", "Albuterol",
+  "Fluticasone", "Montelukast", "Omeprazole", "Pantoprazole", "Ranitidine",
+  "Sertraline", "Escitalopram", "Fluoxetine", "Citalopram", "Trazodone",
+  "Alprazolam", "Lorazepam", "Clonazepam", "Zolpidem", "Gabapentin",
+  "Pregabalin", "Amoxicillin", "Azithromycin", "Ciprofloxacin", "Doxycycline",
+  "Cephalexin", "Prednisone", "Methylprednisolone", "Hydrochlorothiazide",
+  "Furosemide", "Losartan", "Valsartan", "Warfarin", "Clopidogrel",
+  "Tramadol", "Oxycodone", "Hydrocodone", "Codeine", "Morphine",
+  "Cetirizine", "Loratadine", "Fexofenadine", "Diphenhydramine",
+  "Tamsulosin", "Finasteride", "Sildenafil", "Tadalafil", "Rosuvastatin",
+  "Ezetimibe", "Sitagliptin", "Empagliflozin", "Liraglutide", "Dulaglutide",
+  "Apixaban", "Rivaroxaban", "Dabigatran", "Allopurinol", "Colchicine",
+  "Methotrexate", "Adalimumab", "Etanercept", "Infliximab", "Sumatriptan",
+  "Rizatriptan", "Donepezil", "Memantine", "Carbamazepine", "Valproic Acid",
+  "Lamotrigine", "Levetiracetam", "Topiramate", "Aripiprazole", "Olanzapine",
+  "Quetiapine", "Risperidone", "Bupropion", "Venlafaxine", "Duloxetine",
+  "Mirtazapine", "Buspirone", "Propranolol", "Atenolol", "Carvedilol",
+  "Spironolactone", "Potassium Chloride", "Calcium Carbonate", "Vitamin D",
+  "Iron Sulfate", "Folic Acid", "Omega-3"
+];
