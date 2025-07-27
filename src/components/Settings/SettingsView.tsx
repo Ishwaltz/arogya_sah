@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Globe, Bell, Share, Moon, Sun, User, Stethoscope } from 'lucide-react';
+import { Settings, Globe, Bell, Moon, Sun, User, Stethoscope } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
 
@@ -14,20 +14,6 @@ export function SettingsView() {
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);
     dispatch({ type: 'SET_LANGUAGE', payload: language });
-  };
-
-  const generateShareableLink = () => {
-    if (!state.user) return;
-    const linkId = Date.now().toString();
-    const shareableLink = {
-      id: linkId,
-      userId: state.user.id,
-      sharedData: { tracks: true, progress: true, dailyLogs: false, checkIns: false },
-      accessCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
-    };
-    dispatch({ type: 'ADD_SHAREABLE_LINK', payload: shareableLink });
-    const url = `${window.location.origin}/share/${linkId}`;
-    dispatch({ type: 'OPEN_SHARE_MODAL', payload: { url, code: shareableLink.accessCode } });
   };
 
   return (
@@ -54,7 +40,6 @@ export function SettingsView() {
             </div>
           </div>
           <div><h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"><Bell className="w-5 h-5 mr-2" />{t('notifications', state.language)}</h2><div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-4"><div className="flex items-center justify-between"><div><span className="font-medium text-gray-900 dark:text-white">{t('checkinReminders', state.language)}</span><p className="text-sm text-gray-600 dark:text-gray-300">{t('checkinRemindersDesc', state.language)}</p></div><button onClick={() => dispatch({ type: 'SET_SHOW_DAILY_CHECK_IN', payload: !state.showDailyCheckIn })} className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${state.showDailyCheckIn ? 'bg-brand-dark' : 'bg-gray-200'}`}><span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${state.showDailyCheckIn ? 'translate-x-6' : 'translate-x-1'}`} /></button></div></div></div>
-          {state.user?.userType === 'patient' && (<div><h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"><Share className="w-5 h-5 mr-2" />{t('privacySharing', state.language)}</h2><div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"><div className="flex items-center justify-between"><div><span className="font-medium text-gray-900 dark:text-white">{t('generateShareableLink', state.language)}</span><p className="text-sm text-gray-600 dark:text-gray-300">{t('generateShareableLinkDesc', state.language)}</p></div><button onClick={generateShareableLink} className="px-4 py-2 bg-brand-dark text-white rounded-lg hover:bg-opacity-90 transition-colors">{t('generateLink', state.language)}</button></div></div></div>)}
         </div>
       </div>
     </div>

@@ -12,11 +12,9 @@ import { TracksView } from './components/Tracks/TracksView';
 import { AddTrackView } from './components/AddTrack/AddTrackView';
 import { ChatView } from './components/Chat/ChatView';
 import { SettingsView } from './components/Settings/SettingsView';
-import { ShareView } from './components/Share/ShareView';
 import { DailyCheckInModal } from './components/Modals/DailyCheckInModal';
 import { AddAppointmentView } from './components/Doctor/AddAppointmentView';
 import { PatientListView } from './components/Doctor/PatientListView';
-import { ShareLinkModal } from './components/Modals/ShareLinkModal';
 
 function ProtectedRoute({ children, isDoctorRoute = false }: { children: React.ReactNode, isDoctorRoute?: boolean }) {
   const { state } = useApp();
@@ -124,15 +122,10 @@ function AppRoutes() {
             </ProtectedRoute>
           } 
         />
-        <Route 
-          path="/share/:linkId" 
-          element={<ShareView />} 
-        />
         <Route path="/" element={<Navigate to="/dashboard" />} />
       </Routes>
       
       {state.isAuthenticated && state.user?.userType === 'patient' && <DailyCheckInModal />}
-      <ShareLinkModal />
     </Router>
   );
 }

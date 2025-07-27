@@ -4,6 +4,7 @@ import { Home, Calendar, List, Plus, MessageCircle, Settings, LogOut, User, Moon
 import { useApp } from '../context/AppContext';
 import { t } from '../utils/translations';
 import { isToday, isTomorrow, format } from 'date-fns';
+import { Logo } from './Logo';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -64,7 +65,6 @@ export function Layout({ children }: LayoutProps) {
     { path: '/doctor/patients', icon: Users, label: 'Patients' },
     { path: '/add-track', icon: Plus, label: t('addTrack', state.language) },
     { path: '/doctor/add-appointment', icon: CalendarClock, label: 'Appointments' },
-    { path: '/tracks', icon: List, label: 'All Prescriptions' },
   ];
 
   const navItems = state.user?.userType === 'doctor' ? doctorNavItems : patientNavItems;
@@ -75,12 +75,7 @@ export function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-brand-dark rounded-lg flex items-center justify-center">
-                  <Plus className="w-5 h-5 text-white" />
-                </div>
-                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Arogya Sahayak</h1>
-              </div>
+              <Logo />
             </div>
             
             <div className="flex items-center space-x-4">
@@ -94,9 +89,7 @@ export function Layout({ children }: LayoutProps) {
                 <span className={`px-2 py-1 text-white rounded text-xs capitalize ${state.user?.userType === 'doctor' ? 'bg-brand-dark' : 'bg-brand-medium'}`}>{state.user?.userType}</span>
               </div>
               
-              {state.user?.userType !== 'doctor' && (
-                <Link to="/settings" className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"><Settings className="w-4 h-4" /></Link>
-              )}
+              <Link to="/settings" className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"><Settings className="w-4 h-4" /></Link>
               
               <button onClick={handleLogout} className="flex items-center space-x-1 text-sm text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
                 <LogOut className="w-4 h-4" />

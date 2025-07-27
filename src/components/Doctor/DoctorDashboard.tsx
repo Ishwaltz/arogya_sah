@@ -33,7 +33,7 @@ export function DoctorDashboard() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('welcomeBack', state.language)}, {state.user?.name}!</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('welcomeBack', state.language)}, Dr. {state.user?.name}!</h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">{t('doctorDashboard', state.language)} - {format(new Date(), 'EEEE, MMMM do, yyyy')}</p>
       </div>
 

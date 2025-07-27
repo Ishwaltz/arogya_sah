@@ -1,4 +1,4 @@
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 export interface AIResponse {
@@ -16,6 +16,14 @@ const RED_FLAG_KEYWORDS = [
 ];
 
 export async function askAI(message: string, userContext?: any): Promise<AIResponse> {
+  if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'YOUR_API_KEY_HERE') {
+    return {
+      message: 'The AI assistant is not configured. Please contact support.',
+      isRedFlag: false,
+      redFlags: []
+    };
+  }
+
   try {
     const systemPrompt = `You are Arogya Sahayak AI, a helpful medical assistant. Provide accurate, empathetic medical information while always recommending consulting healthcare professionals for serious concerns. 
 
@@ -51,7 +59,9 @@ Please respond helpfully and identify any red flag symptoms.`;
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
+      const errorBody = await response.text();
+      console.error('AI API Error:', response.status, errorBody);
+      throw new Error(`API request failed: ${response.status}. Please check your API key and OpenRouter account status.`);
     }
 
     const data = await response.json();
@@ -78,7 +88,7 @@ Please respond helpfully and identify any red flag symptoms.`;
   } catch (error) {
     console.error('AI Service Error:', error);
     return {
-      message: 'I apologize, but I\'m currently unable to respond. Please consult with your healthcare provider if you have medical concerns.',
+      message: `I apologize, but I'm currently unable to respond due to a technical issue. Please consult with your healthcare provider if you have medical concerns. \n\nError: ${error instanceof Error ? error.message : 'Unknown error'}`,
       isRedFlag: false,
       redFlags: []
     };

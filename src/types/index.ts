@@ -21,7 +21,7 @@ export interface MedicineTrack {
 }
 
 export interface Appointment {
-  id: string;
+  id:string;
   patientId: string;
   doctorId: string;
   title: string;
@@ -81,19 +81,6 @@ export interface ChatMessage {
   isRedFlag?: boolean;
 }
 
-export interface ShareableLink {
-  id: string;
-  userId: string;
-  sharedData: {
-    tracks: boolean;
-    progress: boolean;
-    dailyLogs: boolean;
-    checkIns: boolean;
-  };
-  expiresAt?: Date;
-  accessCode: string;
-}
-
 export interface AppState {
   user: User | null;
   users: User[]; // Store all users, including patient shells
@@ -103,14 +90,8 @@ export interface AppState {
   appointments: Appointment[];
   dailyCheckIns: DailyCheckIn[];
   chatHistory: ChatMessage[];
-  shareableLinks: ShareableLink[];
   isAuthenticated: boolean;
   theme: 'light' | 'dark';
   language: string;
   showDailyCheckIn: boolean;
-  shareLinkModal: {
-    isOpen: boolean;
-    url: string;
-    code: string;
-  };
 }

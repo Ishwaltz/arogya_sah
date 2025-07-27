@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { AppState, MedicineTrack, DailyLog, User, Doctor, DailyCheckIn, ChatMessage, ShareableLink, Appointment } from '../types';
+import { AppState, MedicineTrack, DailyLog, User, Doctor, DailyCheckIn, ChatMessage, Appointment } from '../types';
 
 type Action =
   | { type: 'LOGIN'; payload: User }
@@ -14,9 +14,6 @@ type Action =
   | { type: 'ADD_APPOINTMENT'; payload: Appointment }
   | { type: 'ADD_CHECK_IN'; payload: DailyCheckIn }
   | { type: 'ADD_CHAT_MESSAGE'; payload: ChatMessage }
-  | { type: 'ADD_SHAREABLE_LINK'; payload: ShareableLink }
-  | { type: 'OPEN_SHARE_MODAL'; payload: { url: string; code: string } }
-  | { type: 'CLOSE_SHARE_MODAL' }
   | { type: 'TOGGLE_THEME' }
   | { type: 'SET_LANGUAGE'; payload: string }
   | { type: 'SET_SHOW_DAILY_CHECK_IN'; payload: boolean }
@@ -28,18 +25,16 @@ const initialState: AppState = {
   tracks: [],
   dailyLogs: [],
   doctors: [
-    { id: 'doc_1', name: 'Dr. Emily Carter', email: 'emily.carter@clinic.com', specialization: 'Cardiology', patients: [], licenseNumber: 'DOC001' },
-    { id: 'doc_2', name: 'Dr. Ben Adams', email: 'ben.adams@clinic.com', specialization: 'General Medicine', patients: [], licenseNumber: 'DOC002' },
+    { id: 'doc_1', name: 'Emily Carter', email: 'emily.carter@clinic.com', specialization: 'Cardiology', patients: [], licenseNumber: 'DOC001' },
+    { id: 'doc_2', name: 'Ben Adams', email: 'ben.adams@clinic.com', specialization: 'General Medicine', patients: [], licenseNumber: 'DOC002' },
   ],
   appointments: [],
   dailyCheckIns: [],
   chatHistory: [],
-  shareableLinks: [],
   isAuthenticated: false,
   theme: 'light',
   language: 'en',
   showDailyCheckIn: true,
-  shareLinkModal: { isOpen: false, url: '', code: '' },
 };
 
 function appReducer(state: AppState, action: Action): AppState {
@@ -47,7 +42,13 @@ function appReducer(state: AppState, action: Action): AppState {
     case 'LOGIN':
       return { ...state, user: action.payload, isAuthenticated: true };
     case 'LOGOUT':
-      return { ...initialState, theme: state.theme, language: state.language, doctors: state.doctors, users: state.users };
+      // Preserve all data, only clear session
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        showDailyCheckIn: true,
+      };
     case 'ADD_PATIENT': {
       const { patient, doctorId } = action.payload;
       // Avoid adding patient with duplicate ID
@@ -86,14 +87,18 @@ function appReducer(state: AppState, action: Action): AppState {
       return { ...state, appointments: [...state.appointments, action.payload] };
     case 'ADD_CHECK_IN':
       return { ...state, dailyCheckIns: [...state.dailyCheckIns, action.payload] };
-    case 'ADD_CHAT_MESSAGE':
-      return { ...state, chatHistory: [...state.chatHistory, action.payload] };
-    case 'ADD_SHAREABLE_LINK':
-      return { ...state, shareableLinks: [...state.shareableLinks, action.payload] };
-    case 'OPEN_SHARE_MODAL':
-      return { ...state, shareLinkModal: { isOpen: true, ...action.payload } };
-    case 'CLOSE_SHARE_MODAL':
-      return { ...state, shareLinkModal: { ...state.shareLinkModal, isOpen: false } };
+    case 'ADD_CHAT_MESSAGE': {
+      const existingIndex = state.chatHistory.findIndex(chat => chat.id === action.payload.id);
+      if (existingIndex > -1) {
+        // Update the existing message with the AI response
+        const updatedChatHistory = [...state.chatHistory];
+        updatedChatHistory[existingIndex] = action.payload;
+        return { ...state, chatHistory: updatedChatHistory };
+      } else {
+        // Add the new optimistic message
+        return { ...state, chatHistory: [...state.chatHistory, action.payload] };
+      }
+    }
     case 'TOGGLE_THEME':
       return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
     case 'SET_LANGUAGE':
